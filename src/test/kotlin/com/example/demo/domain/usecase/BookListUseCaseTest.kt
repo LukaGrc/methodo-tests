@@ -7,6 +7,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
+import io.mockk.verify
 
 class BookListUseCaseTest: StringSpec ({
     val bookRepository = mockk<BookRepository>()
@@ -42,6 +43,6 @@ class BookListUseCaseTest: StringSpec ({
         val result = bookListUseCase.getBooks()
 
         // Assert
-//        result shouldContainExactly listOf(book)
+        verify(exactly = 1) { bookRepository.add(book) }
     }
 })
