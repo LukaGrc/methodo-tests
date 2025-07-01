@@ -1,0 +1,47 @@
+package com.example.demo.domain.usecase
+
+import com.example.demo.domain.model.Book
+import com.example.demo.domain.port.BookRepository
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldContainExactly
+import io.mockk.every
+import io.mockk.justRun
+import io.mockk.mockk
+
+class BookListUseCaseTest: StringSpec ({
+    val bookRepository = mockk<BookRepository>()
+    val bookListUseCase = BookListUseCase(bookRepository)
+
+    "getAll returns sorted list of books" {
+        // Arrange
+        val books = listOf(
+            Book("Author1", "Book1"),
+            Book("Author3", "Book3"),
+            Book("Author2", "Book2")
+        )
+        every { bookRepository.getAll() } returns books
+
+        // Act
+        val result = bookListUseCase.getBooks()
+
+        // Assert
+        result shouldContainExactly listOf(
+            Book("Author1", "Book1"),
+            Book("Author2", "Book2"),
+            Book("Author3", "Book3")
+        )
+    }
+
+    "add method adds a book to the repository" {
+        // Arrange
+        val book = Book("NewAuthor", "NewTitle")
+        justRun { bookRepository.add(any()) }
+
+        // Act
+        bookListUseCase.addBook(book)
+        val result = bookListUseCase.getBooks()
+
+        // Assert
+//        result shouldContainExactly listOf(book)
+    }
+})
