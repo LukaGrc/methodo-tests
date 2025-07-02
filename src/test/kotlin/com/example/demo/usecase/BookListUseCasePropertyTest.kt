@@ -1,7 +1,8 @@
-package com.example.demo.domain.usecase
+package com.example.demo.usecase
 
 import com.example.demo.domain.model.Book
 import com.example.demo.domain.port.BookRepository
+import com.example.demo.domain.usecase.BookListUseCase
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
