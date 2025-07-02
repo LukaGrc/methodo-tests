@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class useCasesConfiguration {
     @Bean
-    fun bookListUseCase(bookRepository: BookRepository): BookListUseCase {
-        return BookListUseCase(bookRepository)
+    fun bookListUseCase(bookDAO: BookRepository): BookListUseCase {
+        return BookListUseCase(bookDAO)
     }
 }

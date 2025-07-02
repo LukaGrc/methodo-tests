@@ -40,7 +40,7 @@ jobs:
           check_name: Unit tests results
           files: |
             build/test-results/test/*.xml
-      - name: Integration testAdd commentMore actions
+      - name: Integration test
         run: ./gradlew testIntegration
       - name: Publish Integration Test
         uses: EnricoMi/publish-unit-test-result-action@v2

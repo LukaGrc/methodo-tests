@@ -1,7 +1,6 @@
 package com.example.demo.infrastructure.driven.postgres
 
 import com.example.demo.domain.model.Book
-import com.example.demo.infrastructure.driven.BookDAO
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.kotest.core.spec.style.StringSpec
@@ -50,13 +49,13 @@ class BookDAOITest(
 
             // THEN
             res.shouldContainExactlyInAnyOrder(
-                Book("Hamlet", "Shakespeare"), Book("Les fleurs du mal", "Beaudelaire"), Book("Harry Potter", "Rowling")
+                Book("Shakespeare", "Hamlet"), Book("Beaudelaire", "Les fleurs du mal"), Book("Rowling", "Harry Potter")
             )
         }
 
         "create book in db" {
             // GIVEN
-            val book = Book("Les misérables", "Victor Hugo")
+            val book = Book("Victor Hugo", "Les misérables")
 
             // WHEN
             bookDAO.add(book)

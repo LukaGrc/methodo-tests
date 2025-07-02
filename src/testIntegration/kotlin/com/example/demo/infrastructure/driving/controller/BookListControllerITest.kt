@@ -23,7 +23,7 @@ class BookListControllerITest(
 
     "rest route get books" {
         // GIVEN
-        every { bookListUseCase.getBooks() } returns listOf(Book("A", "B"))
+        every { bookListUseCase.getBooks() } returns listOf(Book("B", "A"))
 
         // WHEN
         mockMvc.get("/books")
