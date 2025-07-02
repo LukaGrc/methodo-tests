@@ -1,4 +1,4 @@
-package com.example.demo.domain.usecase
+package com.example.demo.model
 
 import com.example.demo.domain.model.Book
 import io.kotest.assertions.throwables.shouldThrow
