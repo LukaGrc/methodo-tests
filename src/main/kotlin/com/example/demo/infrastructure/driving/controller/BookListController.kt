@@ -34,6 +34,17 @@ class BookListController(
     }
 
     @CrossOrigin
+    @GetMapping("/{id}")
+    fun getBook(@PathVariable id: Int): ResponseEntity<BookDTO?> {
+        val book = bookListUseCase.getBook(id)
+        if (book == null) {
+            return ResponseEntity(null, HttpStatus.NOT_FOUND)
+        }
+
+        return ResponseEntity(book.toDto(), HttpStatus.OK)
+    }
+
+    @CrossOrigin
     @PatchMapping("/{id}/reservation")
     @ResponseStatus(HttpStatus.OK)
     fun setBookReservationStatus(@PathVariable id: Int, @RequestBody status: Boolean): ResponseEntity<String?> {

@@ -6,6 +6,7 @@ import com.zaxxer.hikari.HikariDataSource
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.assertions.assertSoftly
 import io.kotest.extensions.spring.SpringExtension
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -24,12 +25,12 @@ class BookDAOITest(
     init {
         extension(SpringExtension)
 
-                beforeTest {
-                    performQuery(
-                        // language=sql
-                        "DELETE FROM book"
-                    )
-                }
+        beforeTest {
+            performQuery(
+                // language=sql
+                "TRUNCATE TABLE book RESTART IDENTITY CASCADE"
+            )
+        }
 
         "get all books from db" {
             // GIVEN
@@ -67,6 +68,32 @@ class BookDAOITest(
             )
         }
 
+        "get one book from db" {
+            // GIVEN
+            performQuery(
+                // language=sql
+                """
+               insert into book (title, author)
+               values 
+                   ('Hamlet', 'Shakespeare'),
+                   ('Les fleurs du mal', 'Beaudelaire'),
+                   ('Harry Potter', 'Rowling');
+            """.trimIndent()
+            )
+
+            // WHEN
+            val res = bookDAO.getBook(1)
+
+            // THEN
+            res.shouldBe(
+                Book(
+                    id=1,
+                    author="Shakespeare",
+                    title="Hamlet"
+                ),
+            )
+        }
+
         "create book in db" {
             // GIVEN
             val book = Book(
@@ -88,6 +115,39 @@ class BookDAOITest(
                 this["id"].shouldNotBeNull().shouldBeInstanceOf<Int>()
                 this["title"].shouldBe("Les misérables")
                 this["author"].shouldBe("Victor Hugo")
+                this["isReserved"].shouldBe(false)
+            }
+        }
+
+        "set book reservation in db" {
+            // GIVEN
+            performQuery(
+                // language=sql
+                """
+               insert into book (title, author)
+               values 
+                   ('Hamlet', 'Shakespeare')
+            """.trimIndent()
+            )
+
+            // WHEN
+            val book = bookDAO.getBook(1)
+            if (book == null) {
+                throw Exception("Book not found")
+            }
+            bookDAO.setBookReservation(book, true)
+
+            // THEN
+            val res = performQuery(
+                // language=sql
+                "SELECT * from book"
+            )
+
+            assertSoftly(res.first()) {
+                this["id"].shouldNotBeNull().shouldBeInstanceOf<Int>()
+                this["title"].shouldBe("Hamlet")
+                this["author"].shouldBe("Shakespeare")
+                this["isReserved"].shouldBe(true)
             }
         }
 
