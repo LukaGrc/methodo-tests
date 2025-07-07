@@ -49,13 +49,30 @@ class BookDAOITest(
 
             // THEN
             res.shouldContainExactlyInAnyOrder(
-                Book("Shakespeare", "Hamlet"), Book("Beaudelaire", "Les fleurs du mal"), Book("Rowling", "Harry Potter")
+                Book(
+                    id=1,
+                    author="Shakespeare",
+                    title="Hamlet"
+                ),
+                Book(
+                    id=2,
+                    author="Beaudelaire",
+                    title="Les fleurs du mal"
+                ),
+                Book(
+                    id=3,
+                    author="Rowling",
+                    title="Harry Potter"
+                )
             )
         }
 
         "create book in db" {
             // GIVEN
-            val book = Book("Victor Hugo", "Les misérables")
+            val book = Book(
+                author="Victor Hugo",
+                title="Les misérables"
+            )
 
             // WHEN
             bookDAO.add(book)

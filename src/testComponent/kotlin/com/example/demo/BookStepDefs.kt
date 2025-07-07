@@ -55,15 +55,21 @@ class BookStepDefs {
         val expectedResponse = payload.joinToString(separator = ",", prefix = "[", postfix = "]") { line ->
             """
                 ${
-                line.entries.joinToString(separator = ",", prefix = "{", postfix = "}") {
-                    """"${it.key}": "${it.value}""""
+                line.entries.joinToString(separator = ",", prefix = "{", postfix = "}") { entry ->
+                    val key = entry.key
+                    val value = entry.value
+                    
+                    when (key) {
+                        "id" -> """"$key": $value"""
+                        "reserved" -> """"$key": $value"""
+                        else -> """"$key": "$value""""
+                    }
                 }
             }
             """.trimIndent()
 
         }
         lastBookResult.extract().body().jsonPath().prettify() shouldBe JsonPath(expectedResponse).prettify()
-
     }
 
     companion object {

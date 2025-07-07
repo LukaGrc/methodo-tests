@@ -4,7 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
-    <include file="/db/changelogs/20250701114500_initial_schema.xml" />
-    <include file="/db/changelogs/20250703152100_add_booking.xml" />
+    <changeSet id="20250703152100" author="l.garcia">
+        <addColumn tableName="book">
+            <column name="isReserved" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

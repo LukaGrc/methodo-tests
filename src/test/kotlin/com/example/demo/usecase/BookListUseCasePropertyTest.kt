@@ -13,6 +13,11 @@ class InMemoryBookRepository: BookRepository {
     private val books = mutableListOf<Book>()
 
     override fun getAll(): List<Book> = books
+    override fun getBook(id: Int): Book? = books.find { it.id == id }
+
+    override fun setBookReservation(book: Book, status: Boolean) {
+        books[books.indexOf(book)] = book.copy(isReserved = status)
+    }
 
     override fun add(book: Book) {
         books.add(book)
@@ -32,7 +37,7 @@ class BookListUseCasePropertyTest : StringSpec({
         val titles = mutableListOf<String>()
 
         checkAll(Arb.stringPattern("[A-Za-z]+")) { title ->
-            bookRepository.add(Book("Author", title))
+            bookRepository.add(Book(author="Author", title=title))
             titles.add(title)
         }
 

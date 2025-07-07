@@ -4,6 +4,6 @@ Feature: the user can create and retrieve the books
     And the user creates the book "L'avare" written by "Molière"
     And the user get all books
     Then the list should contains the following books in the same order
-      | author | title |
-      | Molière | L'avare |
-      | Victor Hugo | Les Misérables |
+      | id | author | title | reserved |
+      | 2 | Molière | L'avare | false |
+      | 1 | Victor Hugo | Les Misérables | false |
